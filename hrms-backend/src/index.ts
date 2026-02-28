@@ -15,14 +15,14 @@ app.use(express.json());
 try {
     const employeeRoutes = require("./routes/employeeRoutes").default;
     const exEmployeeRoutes = require("./routes/exEmployeeRoutes").default;
-    const adminRoutes = require("./routes/adminRoutes").default;
+    const financeRoutes = require("./routes/financeRoutes").default;
     const managerRoutes = require("./routes/managerRoutes").default;
     const onboardingRoutes = require("./routes/onboardingRoutes").default;
     const offboardingRoutes = require("./routes/offboardingRoutes").default;
 
     app.use("/api/employees", employeeRoutes);
     app.use("/api/exemployees", exEmployeeRoutes);
-    app.use("/api/admin", adminRoutes);
+    app.use("/api/finance", financeRoutes);
     app.use("/api/managers", managerRoutes);
     app.use("/api/onboarding", onboardingRoutes);
     app.use("/api/offboarding", offboardingRoutes);
