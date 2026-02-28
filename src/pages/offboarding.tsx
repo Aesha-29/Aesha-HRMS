@@ -20,10 +20,10 @@ function Offboarding() {
 
     const fetchData = async () => {
         try {
-            const offRes = await axios.get("http://localhost:5000/api/offboarding");
+            const offRes = await axios.get("https://hrms-backend-liard.vercel.app/api/offboarding");
             setOffboardings(offRes.data);
 
-            const empRes = await axios.get("http://localhost:5000/api/employees");
+            const empRes = await axios.get("https://hrms-backend-liard.vercel.app/api/employees");
             // Filter out employees who are already in the offboarding list
             const offboardingIds = offRes.data.map((o: any) => o.employeeId);
             const available = empRes.data.filter((e: any) => !offboardingIds.includes(e.id));
@@ -46,7 +46,7 @@ function Offboarding() {
     const handleInitiate = async () => {
         if (!formData.employeeDbId || !formData.lastWorkingDate) return alert("Employee and Date required");
         try {
-            await axios.post("http://localhost:5000/api/offboarding/initiate", {
+            await axios.post("https://hrms-backend-liard.vercel.app/api/offboarding/initiate", {
                 employeeDbId: parseInt(formData.employeeDbId),
                 lastWorkingDate: formData.lastWorkingDate,
                 reason: formData.reason
@@ -62,7 +62,7 @@ function Offboarding() {
     const cancelOffboarding = async (id: number) => {
         if (!window.confirm("Are you sure you want to cancel this offboarding process?")) return;
         try {
-            await axios.delete(`http://localhost:5000/api/offboarding/${id}`);
+            await axios.delete(`https://hrms-backend-liard.vercel.app/api/offboarding/${id}`);
             fetchData();
         } catch (error) {
             alert("Failed to cancel offboarding");
@@ -72,11 +72,11 @@ function Offboarding() {
     const toggleChecklist = async (checklistId: number, currentStatus: string) => {
         const newStatus = currentStatus === "Completed" ? "Pending" : "Completed";
         try {
-            await axios.put(`http://localhost:5000/api/offboarding/checklist/${checklistId}`, {
+            await axios.put(`https://hrms-backend-liard.vercel.app/api/offboarding/checklist/${checklistId}`, {
                 status: newStatus
             });
             // Refresh the specific checklist data in the modal
-            const offRes = await axios.get("http://localhost:5000/api/offboarding");
+            const offRes = await axios.get("https://hrms-backend-liard.vercel.app/api/offboarding");
             setOffboardings(offRes.data);
             const updatedActive = offRes.data.find((o: any) => o.id === activeOffboarding.id);
             setActiveOffboarding(updatedActive);

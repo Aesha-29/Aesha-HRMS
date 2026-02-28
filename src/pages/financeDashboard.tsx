@@ -17,7 +17,7 @@ const FinanceDashboard = () => {
   const advanceReturnDeptRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/finance").then(res => {
+    axios.get("https://hrms-backend-liard.vercel.app/api/finance").then(res => {
       const total = res.data.reduce((acc: number, curr: any) => acc + (curr.amount || 0), 0);
       setTotalExpenses(total);
     }).catch(console.error);

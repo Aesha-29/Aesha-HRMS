@@ -29,7 +29,7 @@ function Managers() {
 
   const fetchManagers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/managers");
+      const response = await axios.get("https://hrms-backend-liard.vercel.app/api/managers");
       const mapped = response.data.map((m: any) => ({
         id: `MGR-${m.id}`,
         dbId: m.id,
@@ -52,7 +52,7 @@ function Managers() {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/employees");
+      const response = await axios.get("https://hrms-backend-liard.vercel.app/api/employees");
       setAllEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -87,7 +87,7 @@ function Managers() {
   const handleAdd = async () => {
     if (!newManager.name || !newManager.email) return;
     try {
-      await axios.post("http://localhost:5000/api/managers", {
+      await axios.post("https://hrms-backend-liard.vercel.app/api/managers", {
         name: newManager.name,
         email: newManager.email,
         mobile: newManager.mobile,
@@ -106,7 +106,7 @@ function Managers() {
 
   const handleDelete = async (dbId: number) => {
     try {
-      await axios.delete(`http://localhost:5000/api/managers/${dbId}`);
+      await axios.delete(`https://hrms-backend-liard.vercel.app/api/managers/${dbId}`);
       fetchManagers();
     } catch (error: any) {
       alert(error.response?.data?.message || "Failed to delete manager");
@@ -133,7 +133,7 @@ function Managers() {
   const handleSaveAssign = async () => {
     if (!activeManager) return;
     try {
-      await axios.post("http://localhost:5000/api/managers/assign", {
+      await axios.post("https://hrms-backend-liard.vercel.app/api/managers/assign", {
         managerId: activeManager.dbId,
         employeeIds: selectedEmployees
       });

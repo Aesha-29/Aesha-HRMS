@@ -21,6 +21,12 @@ const parseDates = (data: any) => {
     delete parsed.expenseApproval;
     delete parsed.active;
 
+    // Social media fields are mapped to socialLinks
+    delete parsed.facebook;
+    delete parsed.linkedin;
+    delete parsed.twitter;
+    delete parsed.instagram;
+
     return parsed;
 };
 

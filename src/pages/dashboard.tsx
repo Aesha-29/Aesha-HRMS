@@ -51,7 +51,7 @@ function Dashboard() {
     const [totalEmployees, setTotalEmployees] = useState(0);
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/employees")
+        axios.get("https://hrms-backend-liard.vercel.app/api/employees")
             .then(res => setTotalEmployees(res.data.length))
             .catch(console.error);
     }, []);

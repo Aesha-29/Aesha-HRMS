@@ -28,7 +28,7 @@ function ExEmployees({ setActivePage, setSelectedEmployee }: any) {
 
   const fetchExEmployees = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/exemployees");
+      const response = await axios.get("https://hrms-backend-liard.vercel.app/api/exemployees");
       const mapped = response.data.map((emp: any) => ({
         ...emp,
         id: emp.employeeId, // Use employeeId as ID
@@ -49,7 +49,7 @@ function ExEmployees({ setActivePage, setSelectedEmployee }: any) {
   const handleReactivate = async (id: string) => {
     if (window.confirm("Are you sure you want to reactivate this employee?")) {
       try {
-        await axios.put(`http://localhost:5000/api/employees/${id}/reactivate`);
+        await axios.put(`https://hrms-backend-liard.vercel.app/api/employees/${id}/reactivate`);
         fetchExEmployees();
       } catch (error) {
         console.error("Failed to reactivate employee:", error);

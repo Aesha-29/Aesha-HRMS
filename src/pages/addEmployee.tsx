@@ -39,7 +39,7 @@ function AddEmployee({ setActivePage, selectedEmployee, setSelectedEmployee }: a
 
   useEffect(() => {
     // Fetch managers for the reporting manager dropdown
-    axios.get("http://localhost:5000/api/managers").then(res => setManagers(res.data)).catch(console.error);
+    axios.get("https://hrms-backend-liard.vercel.app/api/managers").then(res => setManagers(res.data)).catch(console.error);
 
     if (selectedEmployee) {
       setFormData({
@@ -76,11 +76,11 @@ function AddEmployee({ setActivePage, selectedEmployee, setSelectedEmployee }: a
 
       if (selectedEmployee) {
         const idToUpdate = selectedEmployee.employeeId || selectedEmployee.id;
-        await axios.put(`http://localhost:5000/api/employees/${idToUpdate}`, mergedData);
+        await axios.put(`https://hrms-backend-liard.vercel.app/api/employees/${idToUpdate}`, mergedData);
         setSuccess(true);
         setTimeout(() => { setSuccess(false); setSelectedEmployee(null); setActivePage("employees"); }, 1500);
       } else {
-        await axios.post("http://localhost:5000/api/employees", mergedData);
+        await axios.post("https://hrms-backend-liard.vercel.app/api/employees", mergedData);
         setSuccess(true);
         setTimeout(() => { setSuccess(false); setActivePage("employees"); }, 2000);
       }

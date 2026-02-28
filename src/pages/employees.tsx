@@ -27,7 +27,7 @@ function Employees({ setActivePage, setSelectedEmployee }: any) {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/employees");
+      const response = await axios.get("https://hrms-backend-liard.vercel.app/api/employees");
 
       const fetchedEmployees = response.data
         .map((emp: any) => ({
@@ -52,7 +52,7 @@ function Employees({ setActivePage, setSelectedEmployee }: any) {
     if (window.confirm("Are you sure you want to remove this employee?")) {
       try {
         await axios.put(
-          `http://localhost:5000/api/employees/${id}/disable`
+          `https://hrms-backend-liard.vercel.app/api/employees/${id}/disable`
         );
         fetchEmployees();
       } catch (error) {

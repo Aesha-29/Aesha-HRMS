@@ -24,7 +24,7 @@ function ViewEmployee({ selectedEmployee, setActivePage }: any) {
   const handleRemove = async (id: string) => {
     if (window.confirm("Are you sure you want to remove this employee?")) {
       try {
-        await axios.put(`http://localhost:5000/api/employees/${id}/disable`);
+        await axios.put(`https://hrms-backend-liard.vercel.app/api/employees/${id}/disable`);
         setActivePage("employees");
       } catch (error) {
         console.error("Failed to disable employee:", error);

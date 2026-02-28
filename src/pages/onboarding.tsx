@@ -28,7 +28,7 @@ function Onboarding() {
       return;
     }
     try {
-      await axios.post("http://localhost:5000/api/onboarding", {
+      await axios.post("https://hrms-backend-liard.vercel.app/api/onboarding", {
         employeeId: employee.employeeId,
         status: employee.status,
         documentsSubmitted: true, // Simplified for this demo
