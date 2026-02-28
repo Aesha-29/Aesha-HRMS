@@ -1,9 +1,9 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import fs from "fs";
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const fs = require("fs");
 
-import debugApp from './debug';
+const debugApp = require("./debug").default;
 
 dotenv.config();
 
