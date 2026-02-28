@@ -274,3 +274,119 @@
 .sidebar::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.2);
 }
+/* ========================================================= */
+/*                EXACT SUBMODULE STYLING                   */
+/* ========================================================= */
+
+/* Submenu wrapper */
+.sidebar-menu .submenu-list {
+    list-style: none;
+    margin: 2px 0 10px 0;
+    padding: 0;
+    position: relative;
+}
+
+/* Vertical connecting line (UNCHANGED) */
+.sidebar-menu .submenu-list::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    bottom: 5px;
+    left: 23px;   /* Line stays same */
+    width: 1px;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Submenu item */
+.sidebar-menu .submenu-list li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 8px 14px 8px 90px;   /* Text moved more right */
+    margin: 0;
+    font-size: 13px;
+    font-weight: 400;
+    color: #94a3b8;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    min-height: auto;
+}
+
+/* Remove shimmer */
+.sidebar-menu .submenu-list li::after {
+    display: none;
+}
+
+/* Dot (moved right but line unchanged) */
+.sidebar-menu .submenu-list li .sub-dot {
+    position: absolute;
+    left: 70px;   /* Dot shifted right */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #94a3b8;
+    transition: all 0.2s ease;
+}
+
+/* Hover */
+.sidebar-menu .submenu-list li:hover {
+    color: #ffffff;
+}
+
+.sidebar-menu .submenu-list li:hover .sub-dot {
+    background: #e2e8f0;
+}
+
+/* Active sub */
+.sidebar-menu .submenu-list li.active-sub {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.sidebar-menu .submenu-list li.active-sub .sub-dot {
+    background: #6969e9;
+    box-shadow: 0 0 6px rgba(116, 116, 223, 0.6);
+}
+
+/* Parent highlight */
+.sidebar-menu li.active-parent {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* Smooth arrow rotation */
+.arrow-icon.rotate {
+    transform: rotate(90deg);
+}
+/* ========================================= */
+/* FORCE REMOVE GLASS HOVER FROM SUB ITEMS */
+/* ========================================= */
+
+.sidebar-menu .submenu-list li,
+.sidebar-menu .submenu-list li:hover,
+.sidebar-menu .submenu-list li.active-sub {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Disable shimmer animation */
+.sidebar-menu .submenu-list li::after,
+.sidebar-menu .submenu-list li:hover::after {
+    display: none !important;
+}
+
+/* Hover effect = ONLY text + darker dot */
+.sidebar-menu .submenu-list li:hover {
+    color: #ffffff !important;
+}
+
+.sidebar-menu .submenu-list li:hover .sub-dot {
+    background: #6b7280 !important;  /* darker grey */
+}

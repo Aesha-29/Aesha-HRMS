@@ -1,8 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import "./financedashboard.css";
 import Chart from "chart.js/auto";
 
 const FinanceDashboard = () => {
+  const [totalExpenses, setTotalExpenses] = useState(0);
 
   const financeChartRef = useRef<HTMLCanvasElement | null>(null);
   const yearlyRef = useRef<HTMLCanvasElement | null>(null);
@@ -13,6 +15,13 @@ const FinanceDashboard = () => {
   const advanceReturnRef = useRef<HTMLCanvasElement | null>(null);
   const advanceDeptRef = useRef<HTMLCanvasElement | null>(null);
   const advanceReturnDeptRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    axios.get("http://localhost:5000/api/finance").then(res => {
+      const total = res.data.reduce((acc: number, curr: any) => acc + (curr.amount || 0), 0);
+      setTotalExpenses(total);
+    }).catch(console.error);
+  }, []);
 
   useEffect(() => {
     const charts: Chart[] = [];
@@ -41,9 +50,9 @@ const FinanceDashboard = () => {
       charts.push(new Chart(yearlyRef.current, {
         type: "bar",
         data: {
-          labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
           datasets: [{
-            data: [54998,42000,38000,47000,51000,46000,48000,52000,50000,53000,49000,60000],
+            data: [54998, 42000, 38000, 47000, 51000, 46000, 48000, 52000, 50000, 53000, 49000, 60000],
             backgroundColor: "#3b82f6",
             borderRadius: 6
           }]
@@ -63,10 +72,10 @@ const FinanceDashboard = () => {
       charts.push(new Chart(categoryRef.current, {
         type: "doughnut",
         data: {
-          labels: ["Client Meetings","Travel","Supplies"],
+          labels: ["Client Meetings", "Travel", "Supplies"],
           datasets: [{
-            data: [65,25,10],
-            backgroundColor: ["#3b82f6","#ef4444","#10b981"],
+            data: [65, 25, 10],
+            backgroundColor: ["#3b82f6", "#ef4444", "#10b981"],
             borderWidth: 0
           }]
         },
@@ -78,10 +87,10 @@ const FinanceDashboard = () => {
       charts.push(new Chart(branchRef.current, {
         type: "doughnut",
         data: {
-          labels: ["Ahmedabad","Jaipur","Surat"],
+          labels: ["Ahmedabad", "Jaipur", "Surat"],
           datasets: [{
-            data: [70,20,10],
-            backgroundColor: ["#3b82f6","#10b981","#f59e0b"],
+            data: [70, 20, 10],
+            backgroundColor: ["#3b82f6", "#10b981", "#f59e0b"],
             borderWidth: 0
           }]
         },
@@ -93,10 +102,10 @@ const FinanceDashboard = () => {
       charts.push(new Chart(loanExpenseRef.current, {
         type: "doughnut",
         data: {
-          labels: ["15 Dec 2025","Hyderabad","Training"],
+          labels: ["15 Dec 2025", "Hyderabad", "Training"],
           datasets: [{
-            data: [57.5,18.9,23.6],
-            backgroundColor: ["#3b82f6","#10b981","#f59e0b"],
+            data: [57.5, 18.9, 23.6],
+            backgroundColor: ["#3b82f6", "#10b981", "#f59e0b"],
             borderWidth: 0
           }]
         },
@@ -108,10 +117,10 @@ const FinanceDashboard = () => {
       charts.push(new Chart(loanReturnRef.current, {
         type: "pie",
         data: {
-          labels: ["Completed","Pending"],
+          labels: ["Completed", "Pending"],
           datasets: [{
-            data: [93.6,6.4],
-            backgroundColor: ["#3b82f6","#10b981"],
+            data: [93.6, 6.4],
+            backgroundColor: ["#3b82f6", "#10b981"],
             borderWidth: 0
           }]
         }
@@ -122,10 +131,10 @@ const FinanceDashboard = () => {
       charts.push(new Chart(advanceReturnRef.current, {
         type: "doughnut",
         data: {
-          labels: ["Returned","Remaining"],
+          labels: ["Returned", "Remaining"],
           datasets: [{
-            data: [100,0],
-            backgroundColor: ["#3b82f6","#e0e0e0"],
+            data: [100, 0],
+            backgroundColor: ["#3b82f6", "#e0e0e0"],
             borderWidth: 0
           }]
         },
@@ -137,9 +146,9 @@ const FinanceDashboard = () => {
       charts.push(new Chart(advanceDeptRef.current, {
         type: "bar",
         data: {
-          labels: ["HR","Sales","Support","Admin"],
+          labels: ["HR", "Sales", "Support", "Admin"],
           datasets: [{
-            data: [33000,22000,18000,15000],
+            data: [33000, 22000, 18000, 15000],
             backgroundColor: "#3b82f6",
             borderRadius: 6
           }]
@@ -152,9 +161,9 @@ const FinanceDashboard = () => {
       charts.push(new Chart(advanceReturnDeptRef.current, {
         type: "bar",
         data: {
-          labels: ["HR","Sales","Support","Admin"],
+          labels: ["HR", "Sales", "Support", "Admin"],
           datasets: [{
-            data: [12000,9000,6000,3000],
+            data: [12000, 9000, 6000, 3000],
             backgroundColor: "#ef4444",
             borderRadius: 6
           }]
@@ -187,22 +196,22 @@ const FinanceDashboard = () => {
             <div className="f-card purple">
               <h4>💰</h4>
               <h4>Salary Expenses</h4>
-              <p>₹ 54,998</p>
+              <p>₹ {totalExpenses.toLocaleString("en-IN")}</p>
             </div>
             <div className="f-card orange">
-                <h4>👥</h4>
+              <h4>👥</h4>
               <h4>Employee Expenses</h4>
               <p>₹ 4,38,46,229</p>
             </div>
             <div className="f-card green">
-                <h4>🏦</h4>
+              <h4>🏦</h4>
               <h4>Loan Expenses</h4>
               <p>₹ 5,30,000</p>
             </div>
             <div className="f-card red">
-                <h4>📊</h4>
+              <h4>📊</h4>
               <h4>Total Expenses</h4>
-              <p>₹ 6,45,000</p>
+              <p>₹ {totalExpenses.toLocaleString("en-IN")}</p>
             </div>
           </div>
         </div>
@@ -219,7 +228,7 @@ const FinanceDashboard = () => {
       <div className="yearly-section">
         <div className="yearly-header">
           <h3>Yearly Salary Overview (2026)</h3>
-          <span className="yearly-total">Total: ₹ 6,45,000</span>
+          <span className="yearly-total">Total: ₹ {totalExpenses.toLocaleString("en-IN")}</span>
         </div>
         <div className="yearly-chart-box">
           <canvas ref={yearlyRef}></canvas>

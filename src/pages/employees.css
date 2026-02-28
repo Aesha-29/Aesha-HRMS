@@ -1,0 +1,183 @@
+.employees-container {
+  padding: 30px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-success {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+}
+
+.btn-outline {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 8px 14px;
+  border-radius: 6px;
+}
+
+.summary-cards {
+  display: flex;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  flex: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.search-section input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+}
+
+.branch-filter {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.branch-pill {
+  padding: 6px 15px;
+  background: #f1f5f9;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.active-pill {
+  background: #2563eb;
+  color: white;
+}
+
+.table-wrapper {
+  background: white;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th,
+td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #eee;
+}
+
+th:last-child,
+td:last-child {
+  position: sticky;
+  right: 0;
+  background: white;
+  z-index: 10;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.05);
+}
+
+th:last-child {
+  background: #f8fafc;
+  /* matching typical table header backgrounds if any */
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.status-badge.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.probation {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.status-badge.permanent {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.btn-view {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-right: 4px;
+  font-size: 12px;
+}
+
+.btn-edit {
+  background: #f59e0b;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-right: 4px;
+  font-size: 12px;
+}
+
+.btn-delete {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.total-card {
+  border-left: 4px solid #6366f1;
+}
+
+.active-card {
+  border-left: 4px solid #10b981;
+}
+
+.permanent-card {
+  border-left: 4px solid #3b82f6;
+}
+
+.probation-card {
+  border-left: 4px solid #f59e0b;
+}

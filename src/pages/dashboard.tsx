@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "./dashboard.css";
 import {
     XAxis,
@@ -46,6 +48,14 @@ const recentEmployees = [
 ];
 
 function Dashboard() {
+    const [totalEmployees, setTotalEmployees] = useState(0);
+
+    useEffect(() => {
+        axios.get("http://localhost:5000/api/employees")
+            .then(res => setTotalEmployees(res.data.length))
+            .catch(console.error);
+    }, []);
+
     return (
         <div className="dashboard-container">
             {/* Main Content Area */}
@@ -60,7 +70,7 @@ function Dashboard() {
                             <div className="ns-change positive"><ArrowUpRight size={12} strokeWidth={3} /> 4.2%</div>
                         </div>
                         <div className="ns-body">
-                            <div className="ns-value">248</div>
+                            <div className="ns-value">{totalEmployees}</div>
                             <div className="ns-title">Total Employees</div>
                         </div>
                         <div className="ns-progress"><div className="ns-progress-fill bg-blue" style={{ width: '70%' }}></div></div>
@@ -154,7 +164,7 @@ function Dashboard() {
                                     </PieChart>
                                 </ResponsiveContainer>
                                 <div className="donut-center">
-                                    <span>248</span>
+                                    <span>{totalEmployees}</span>
                                 </div>
                             </div>
                             <div className="split-legend">
