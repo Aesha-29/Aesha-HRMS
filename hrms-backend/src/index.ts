@@ -27,7 +27,7 @@ try {
     app.use("/api/onboarding", onboardingRoutes);
     app.use("/api/offboarding", offboardingRoutes);
 } catch (err) {
-    app.use("*", (req, res) => {
+    app.use((req, res) => {
         let ls = {};
         try { ls['__dirname'] = fs.readdirSync(__dirname); } catch (e) { }
         try { ls['cwd'] = fs.readdirSync(process.cwd()); } catch (e) { }
