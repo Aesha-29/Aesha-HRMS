@@ -9,6 +9,7 @@ import financeRoutes from "./routes/financeRoutes";
 import managerRoutes from "./routes/managerRoutes";
 import onboardingRoutes from "./routes/onboardingRoutes";
 import offboardingRoutes from "./routes/offboardingRoutes";
+import debugApp from './debug';
 
 dotenv.config();
 
@@ -17,6 +18,9 @@ const app = express();
 // Middlewares
 app.use(cors());
 app.use(express.json());
+
+// Add debug route
+app.use(debugApp);
 
 // API Routes
 app.use("/api/employees", employeeRoutes);
