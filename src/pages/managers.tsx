@@ -35,7 +35,7 @@ function Managers() {
         dbId: m.id,
         name: m.name || "",
         email: m.email || "",
-        mobile: "N/A",
+        mobile: m.mobile || "N/A",
         role: m.level || "Manager",
         branchAccess: m.branch || "All",
         departmentAccess: m.department || "",
@@ -90,6 +90,7 @@ function Managers() {
       await axios.post("http://localhost:5000/api/managers", {
         name: newManager.name,
         email: newManager.email,
+        mobile: newManager.mobile,
         level: newManager.role,
         branch: newManager.branchAccess,
         department: newManager.departmentAccess,
@@ -189,16 +190,16 @@ function Managers() {
         <div className="form-card">
           <h3>Add Manager</h3>
           <div className="grid">
-            <input name="name" placeholder="Full Name" onChange={handleChange} />
-            <input name="email" placeholder="Email" onChange={handleChange} />
-            <input name="mobile" placeholder="Mobile" onChange={handleChange} />
+            <input name="name" placeholder="Full Name" value={newManager.name} onChange={handleChange} />
+            <input name="email" placeholder="Email" value={newManager.email} onChange={handleChange} />
+            <input name="mobile" placeholder="Mobile" value={newManager.mobile} onChange={handleChange} />
 
-            <select name="role" onChange={handleChange}>
+            <select name="role" value={newManager.role} onChange={handleChange}>
               <option>Manager</option>
               <option>Admin</option>
             </select>
 
-            <select name="branchAccess" onChange={handleChange}>
+            <select name="branchAccess" value={newManager.branchAccess} onChange={handleChange}>
               <option value="">Branch Access</option>
               <option>Head Office</option>
               <option>Rajkot</option>
@@ -206,7 +207,7 @@ function Managers() {
               <option>All Branches</option>
             </select>
 
-            <select name="departmentAccess" onChange={handleChange}>
+            <select name="departmentAccess" value={newManager.departmentAccess} onChange={handleChange}>
               <option value="">Department Access</option>
               <option>HR</option>
               <option>IT</option>
@@ -244,7 +245,7 @@ function Managers() {
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
               <button
                 onClick={() => setShowAssignModal(false)}
-                style={{ padding: '8px 16px', background: '#e2e8f0', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+                style={{ padding: '8px 16px', background: '#e2e8f0', border: 'none', borderRadius: '6px', cursor: 'pointer', color: '#475569', fontWeight: '500' }}
               >
                 Cancel
               </button>

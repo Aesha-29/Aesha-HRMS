@@ -234,7 +234,7 @@ function AddEmployee({ setActivePage, selectedEmployee, setSelectedEmployee }: a
 
         {/* Form Controls */}
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px', padding: '20px 0', borderTop: '1px solid #e2e8f0' }}>
-          <button type="button" onClick={prevStep} style={{ padding: '10px 20px', background: '#f1f5f9', border: '1px solid #cbd5e1', borderRadius: '6px', cursor: 'pointer' }}>
+          <button type="button" onClick={prevStep} style={{ padding: '10px 20px', background: '#f1f5f9', border: '1px solid #cbd5e1', borderRadius: '6px', cursor: 'pointer', color: '#475569', fontWeight: '500' }}>
             {step === 1 ? "Cancel" : "Previous"}
           </button>
           <div style={{ display: 'flex', gap: '10px' }}>
