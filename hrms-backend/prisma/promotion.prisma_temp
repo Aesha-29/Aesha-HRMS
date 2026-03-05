@@ -1,0 +1,13 @@
+model Promotion {
+  id                  Int      @id @default(autoincrement())
+  employeeId          Int
+  employee            Employee @relation(fields: [employeeId], references: [id])
+  promotionDate       DateTime @default(now())
+  previousDesignation String?
+  newDesignation      String?
+  previousLevelId     Int?
+  newLevelId          Int?
+  remarks             String?  @db.Text
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}

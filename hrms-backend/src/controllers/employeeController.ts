@@ -187,3 +187,40 @@ export const reactivateEmployee = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Server error", error });
     }
 };
+
+/* GET UPCOMING RETIREMENTS */
+export const getUpcomingRetirements = async (req: Request, res: Response) => {
+    try {
+        const employees = await prisma.employee.findMany({
+            where: { status: 'Active', dob: { not: null }, retirementAge: { not: null } },
+            select: {
+                id: true, employeeId: true, firstName: true, lastName: true,
+                dob: true, retirementAge: true, designation: true, department: true
+            }
+        });
+
+        const upcoming: any[] = [];
+        const today = new Date();
+        const nextYear = new Date();
+        nextYear.setFullYear(today.getFullYear() + 1);
+
+        employees.forEach((emp: any) => {
+            const retirementDate = new Date(emp.dob);
+            retirementDate.setFullYear(retirementDate.getFullYear() + emp.retirementAge);
+
+            if (retirementDate > today && retirementDate <= nextYear) {
+                upcoming.push({
+                    ...emp,
+                    retirementDate
+                });
+            }
+        });
+
+        upcoming.sort((a, b) => a.retirementDate - b.retirementDate);
+
+        res.status(200).json(upcoming);
+    } catch (error) {
+        console.error("Upcoming Retirements Error:", error);
+        res.status(500).json({ message: "Server error", error });
+    }
+};

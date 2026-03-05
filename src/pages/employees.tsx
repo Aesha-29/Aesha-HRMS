@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Eye, Edit, Trash2 } from "lucide-react";
+import { Eye, Edit, Trash2, Plus, Download, Users, UserCheck, Shield, Clock, Search } from "lucide-react";
 import "./employees.css";
 
 interface Employee {
@@ -27,7 +27,7 @@ function Employees({ setActivePage, setSelectedEmployee }: any) {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("https://hrms-backend-liard.vercel.app/api/employees");
+      const response = await axios.get("http://localhost:5000/api/employees");
 
       const fetchedEmployees = response.data
         .map((emp: any) => ({
@@ -52,7 +52,7 @@ function Employees({ setActivePage, setSelectedEmployee }: any) {
     if (window.confirm("Are you sure you want to remove this employee?")) {
       try {
         await axios.put(
-          `https://hrms-backend-liard.vercel.app/api/employees/${id}/disable`
+          `http://localhost:5000/api/employees/${id}/disable`
         );
         fetchEmployees();
       } catch (error) {
@@ -87,7 +87,9 @@ function Employees({ setActivePage, setSelectedEmployee }: any) {
     <div className="employees-container">
 
       <div className="page-header">
-        <h2>All Employees</h2>
+        <h2 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Users size={32} color="#3b82f6" fill="#eff6ff" /> All Employees
+        </h2>
         <div className="action-buttons">
           <button className="btn-outline" onClick={handleReset}>
             Reset
@@ -100,38 +102,59 @@ function Employees({ setActivePage, setSelectedEmployee }: any) {
               setActivePage("addEmployee");
             }}
           >
-            Add Employee
+            <Plus size={18} /> Add Employee
           </button>
 
-          <button className="btn-success">
-            Import Excel
+          <button className="btn-success" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Download size={18} /> Import Excel
           </button>
         </div>
       </div>
 
       <div className="summary-cards">
         <div className="card total-card">
-          <h4>Total Employees</h4>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <div style={{ background: '#eff6ff', padding: '8px', borderRadius: '8px', color: '#3b82f6' }}>
+              <Users size={20} />
+            </div>
+            <h4 style={{ margin: 0 }}>Total Employees</h4>
+          </div>
           <p>{totalCount}</p>
         </div>
 
         <div className="card active-card">
-          <h4>Active</h4>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <div style={{ background: '#ecfdf5', padding: '8px', borderRadius: '8px', color: '#10b981' }}>
+              <UserCheck size={20} />
+            </div>
+            <h4 style={{ margin: 0 }}>Active</h4>
+          </div>
           <p>{activeCount}</p>
         </div>
 
         <div className="card permanent-card">
-          <h4>Permanent</h4>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <div style={{ background: '#f5f3ff', padding: '8px', borderRadius: '8px', color: '#8b5cf6' }}>
+              <Shield size={20} />
+            </div>
+            <h4 style={{ margin: 0 }}>Permanent</h4>
+          </div>
           <p>{permanentCount}</p>
         </div>
 
         <div className="card probation-card">
-          <h4>Probation</h4>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <div style={{ background: '#fffbeb', padding: '8px', borderRadius: '8px', color: '#f59e0b' }}>
+              <Clock size={20} />
+            </div>
+            <h4 style={{ margin: 0 }}>Probation</h4>
+          </div>
           <p>{probationCount}</p>
         </div>
       </div>
 
       <div className="search-section">
+        <Search size={18} className="search-icon-inline" />
         <input
           type="text"
           placeholder="Search by ID, Name, Email..."

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Eye, Edit, RotateCcw } from "lucide-react";
+import { Eye, Edit, RotateCcw, History } from "lucide-react";
 import "./exEmployees.css";
 
 interface ExEmployee {
@@ -28,7 +28,7 @@ function ExEmployees({ setActivePage, setSelectedEmployee }: any) {
 
   const fetchExEmployees = async () => {
     try {
-      const response = await axios.get("https://hrms-backend-liard.vercel.app/api/exemployees");
+      const response = await axios.get("http://localhost:5000/api/exemployees");
       const mapped = response.data.map((emp: any) => ({
         ...emp,
         id: emp.employeeId, // Use employeeId as ID
@@ -49,7 +49,7 @@ function ExEmployees({ setActivePage, setSelectedEmployee }: any) {
   const handleReactivate = async (id: string) => {
     if (window.confirm("Are you sure you want to reactivate this employee?")) {
       try {
-        await axios.put(`https://hrms-backend-liard.vercel.app/api/employees/${id}/reactivate`);
+        await axios.put(`http://localhost:5000/api/employees/${id}/reactivate`);
         fetchExEmployees();
       } catch (error) {
         console.error("Failed to reactivate employee:", error);
@@ -70,7 +70,9 @@ function ExEmployees({ setActivePage, setSelectedEmployee }: any) {
   return (
     <div className="ex-container">
 
-      <h2>Ex Employees</h2>
+      <h2 style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: 0, marginBottom: '24px' }}>
+        <History size={32} color="#3b82f6" fill="#eff6ff" /> Ex Employees
+      </h2>
 
       {/* Summary Cards */}
       <div className="summary-cards">

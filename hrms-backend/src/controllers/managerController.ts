@@ -74,7 +74,7 @@ export const deleteManager = async (req: Request, res: Response) => {
 export const assignEmployees = async (req: Request, res: Response) => {
     try {
         // expect an array of employee id integers
-        const { managerId, employeeIds } = req.body;
+        const { managerId, employeeIds, effectiveFrom, remarks } = req.body;
 
         if (!managerId || !employeeIds || !Array.isArray(employeeIds)) {
             return res.status(400).json({ message: "Invalid request format" });
@@ -86,7 +86,9 @@ export const assignEmployees = async (req: Request, res: Response) => {
                 id: { in: employeeIds }
             },
             data: {
-                managerId: parseInt(managerId)
+                managerId: parseInt(managerId),
+                managerEffectiveDate: effectiveFrom ? new Date(effectiveFrom) : null,
+                managerRemarks: remarks || null
             }
         });
 

@@ -49,10 +49,15 @@ const recentEmployees = [
 
 function Dashboard() {
     const [totalEmployees, setTotalEmployees] = useState(0);
+    const [retirements, setRetirements] = useState<any[]>([]);
 
     useEffect(() => {
-        axios.get("https://hrms-backend-liard.vercel.app/api/employees")
+        axios.get("http://localhost:5000/api/employees")
             .then(res => setTotalEmployees(res.data.length))
+            .catch(console.error);
+
+        axios.get("http://localhost:5000/api/employees/retirements/upcoming")
+            .then(res => setRetirements(res.data))
             .catch(console.error);
     }, []);
 
@@ -263,40 +268,26 @@ function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Recent Activity */}
+                    {/* Upcoming Retirements */}
                     <div className="bottom-card activity-card">
                         <div className="chart-header-new" style={{ marginBottom: '16px' }}>
-                            <h3>Recent Activity</h3>
+                            <h3>Upcoming Retirements</h3>
                         </div>
                         <div className="ra-list">
-                            <div className="ra-item">
-                                <div className="ra-icon bg-light-blue"><UserCheck size={14} color="#3b82f6" /></div>
-                                <div className="ra-info">
-                                    <p><strong>Rohit Sharma</strong> submitted leave</p>
-                                    <span>10 min ago</span>
+                            {retirements.map((r: any) => (
+                                <div className="ra-item" key={r.id}>
+                                    <div className="ra-icon bg-light-orange" style={{ background: '#fef3c7' }}><CalendarOff size={14} color="#f59e0b" /></div>
+                                    <div className="ra-info">
+                                        <p><strong>{r.firstName} {r.lastName}</strong></p>
+                                        <span style={{ color: '#ef4444', fontWeight: '500' }}>Retiring: {new Date(r.retirementDate).toLocaleDateString()}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="ra-item">
-                                <div className="ra-icon bg-light-green"><CheckCircle2 size={14} color="#10b981" /></div>
-                                <div className="ra-info">
-                                    <p><strong>Payroll Feb 2026</strong> approved</p>
-                                    <span>1 hr ago</span>
+                            ))}
+                            {retirements.length === 0 && (
+                                <div style={{ padding: '20px', textAlign: 'center', color: '#64748b', fontSize: '13px' }}>
+                                    No upcomings within 12 months.
                                 </div>
-                            </div>
-                            <div className="ra-item">
-                                <div className="ra-icon bg-light-orange"><Briefcase size={14} color="#f59e0b" /></div>
-                                <div className="ra-info">
-                                    <p>New job: <strong>React Developer</strong></p>
-                                    <span>3 hr ago</span>
-                                </div>
-                            </div>
-                            <div className="ra-item">
-                                <div className="ra-icon bg-light-slate"><UserPlus size={14} color="#64748b" /></div>
-                                <div className="ra-info">
-                                    <p><strong>Sneha Gupta</strong> joined today</p>
-                                    <span>9:00 AM</span>
-                                </div>
-                            </div>
+                            )}
                         </div>
                     </div>
 

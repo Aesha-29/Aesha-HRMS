@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { UserMinus } from "lucide-react";
 import "./offboarding.css";
 
 function Offboarding() {
@@ -15,15 +16,17 @@ function Offboarding() {
     const [formData, setFormData] = useState({
         employeeDbId: "",
         lastWorkingDate: "",
-        reason: ""
+        reason: "",
+        noticeServed: "Yes",
+        assets: ""
     });
 
     const fetchData = async () => {
         try {
-            const offRes = await axios.get("https://hrms-backend-liard.vercel.app/api/offboarding");
+            const offRes = await axios.get("http://localhost:5000/api/offboarding");
             setOffboardings(offRes.data);
 
-            const empRes = await axios.get("https://hrms-backend-liard.vercel.app/api/employees");
+            const empRes = await axios.get("http://localhost:5000/api/employees");
             // Filter out employees who are already in the offboarding list
             const offboardingIds = offRes.data.map((o: any) => o.employeeId);
             const available = empRes.data.filter((e: any) => !offboardingIds.includes(e.id));
@@ -46,13 +49,14 @@ function Offboarding() {
     const handleInitiate = async () => {
         if (!formData.employeeDbId || !formData.lastWorkingDate) return alert("Employee and Date required");
         try {
-            await axios.post("https://hrms-backend-liard.vercel.app/api/offboarding/initiate", {
+            const combinedReason = `${formData.reason} | Notice Served: ${formData.noticeServed} | Assets: ${formData.assets || 'None'}`;
+            await axios.post("http://localhost:5000/api/offboarding/initiate", {
                 employeeDbId: parseInt(formData.employeeDbId),
                 lastWorkingDate: formData.lastWorkingDate,
-                reason: formData.reason
+                reason: combinedReason
             });
             setShowInitiateModal(false);
-            setFormData({ employeeDbId: "", lastWorkingDate: "", reason: "" });
+            setFormData({ employeeDbId: "", lastWorkingDate: "", reason: "", noticeServed: "Yes", assets: "" });
             fetchData();
         } catch (error: any) {
             alert(error.response?.data?.message || "Failed to initiate");
@@ -62,7 +66,7 @@ function Offboarding() {
     const cancelOffboarding = async (id: number) => {
         if (!window.confirm("Are you sure you want to cancel this offboarding process?")) return;
         try {
-            await axios.delete(`https://hrms-backend-liard.vercel.app/api/offboarding/${id}`);
+            await axios.delete(`http://localhost:5000/api/offboarding/${id}`);
             fetchData();
         } catch (error) {
             alert("Failed to cancel offboarding");
@@ -72,11 +76,11 @@ function Offboarding() {
     const toggleChecklist = async (checklistId: number, currentStatus: string) => {
         const newStatus = currentStatus === "Completed" ? "Pending" : "Completed";
         try {
-            await axios.put(`https://hrms-backend-liard.vercel.app/api/offboarding/checklist/${checklistId}`, {
+            await axios.put(`http://localhost:5000/api/offboarding/checklist/${checklistId}`, {
                 status: newStatus
             });
             // Refresh the specific checklist data in the modal
-            const offRes = await axios.get("https://hrms-backend-liard.vercel.app/api/offboarding");
+            const offRes = await axios.get("http://localhost:5000/api/offboarding");
             setOffboardings(offRes.data);
             const updatedActive = offRes.data.find((o: any) => o.id === activeOffboarding.id);
             setActiveOffboarding(updatedActive);
@@ -92,7 +96,9 @@ function Offboarding() {
 
     return (
         <div className="offboarding-container">
-            <h2>Employee Offboarding</h2>
+            <h2 style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: 0, marginBottom: '24px' }}>
+                <UserMinus size={32} color="#3b82f6" fill="#eff6ff" /> Employee Offboarding
+            </h2>
 
             <div className="top-controls">
                 <input
@@ -197,8 +203,22 @@ function Offboarding() {
                         </div>
 
                         <div className="form-group">
+                            <label>Notice Period Served?</label>
+                            <select name="noticeServed" value={formData.noticeServed} onChange={handleChange}>
+                                <option>Yes</option>
+                                <option>No (Shortfall)</option>
+                                <option>Waived</option>
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Company Assets to Recover</label>
+                            <input type="text" name="assets" value={formData.assets} onChange={handleChange} placeholder="e.g. Laptop, ID Card, Keys..." />
+                        </div>
+
+                        <div className="form-group">
                             <label>Reason for Exit</label>
-                            <textarea name="reason" value={formData.reason} onChange={handleChange} rows={3} placeholder="Resignation, Termination, etc..."></textarea>
+                            <textarea name="reason" value={formData.reason} onChange={handleChange} rows={2} placeholder="Resignation, Termination, etc..."></textarea>
                         </div>
 
                         <div className="modal-actions">

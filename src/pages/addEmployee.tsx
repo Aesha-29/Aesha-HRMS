@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { UserPlus } from "lucide-react";
 import "./addEmployee.css";
 
 function AddEmployee({ setActivePage, selectedEmployee, setSelectedEmployee }: any) {
@@ -39,7 +40,7 @@ function AddEmployee({ setActivePage, selectedEmployee, setSelectedEmployee }: a
 
   useEffect(() => {
     // Fetch managers for the reporting manager dropdown
-    axios.get("https://hrms-backend-liard.vercel.app/api/managers").then(res => setManagers(res.data)).catch(console.error);
+    axios.get("http://localhost:5000/api/managers").then(res => setManagers(res.data)).catch(console.error);
 
     if (selectedEmployee) {
       setFormData({
@@ -76,11 +77,11 @@ function AddEmployee({ setActivePage, selectedEmployee, setSelectedEmployee }: a
 
       if (selectedEmployee) {
         const idToUpdate = selectedEmployee.employeeId || selectedEmployee.id;
-        await axios.put(`https://hrms-backend-liard.vercel.app/api/employees/${idToUpdate}`, mergedData);
+        await axios.put(`http://localhost:5000/api/employees/${idToUpdate}`, mergedData);
         setSuccess(true);
         setTimeout(() => { setSuccess(false); setSelectedEmployee(null); setActivePage("employees"); }, 1500);
       } else {
-        await axios.post("https://hrms-backend-liard.vercel.app/api/employees", mergedData);
+        await axios.post("http://localhost:5000/api/employees", mergedData);
         setSuccess(true);
         setTimeout(() => { setSuccess(false); setActivePage("employees"); }, 2000);
       }
@@ -101,7 +102,10 @@ function AddEmployee({ setActivePage, selectedEmployee, setSelectedEmployee }: a
 
   return (
     <div className="add-page">
-      <h2>{selectedEmployee ? "Edit Employee" : "Add Employee"}</h2>
+      <h2 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <UserPlus size={32} color="#3b82f6" fill="#eff6ff" />
+        {selectedEmployee ? "Edit Employee" : "Add Employee"}
+      </h2>
 
       {/* Progress Indicator */}
       <div className="wizard-progress" style={{ display: 'flex', gap: '5px', marginBottom: '20px' }}>

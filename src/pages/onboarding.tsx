@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { UserCheck } from "lucide-react";
 import "./onboarding.css";
 
 function Onboarding() {
@@ -28,7 +29,7 @@ function Onboarding() {
       return;
     }
     try {
-      await axios.post("https://hrms-backend-liard.vercel.app/api/onboarding", {
+      await axios.post("http://localhost:5000/api/onboarding", {
         employeeId: employee.employeeId,
         status: employee.status,
         documentsSubmitted: true, // Simplified for this demo
@@ -46,7 +47,9 @@ function Onboarding() {
     <div className="onboarding-container">
 
       <div className="onboarding-header">
-        <h2>Employee Onboarding</h2>
+        <h2 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <UserCheck size={32} color="#3b82f6" fill="#eff6ff" /> Employee Onboarding
+        </h2>
 
         <span className={`status-badge ${employee.status.toLowerCase()}`}>
           {employee.status}

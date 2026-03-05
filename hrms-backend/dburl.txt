@@ -1,0 +1,1 @@
+mysql://cZwU7hN7czYVizH.root:kXhYz4HHEycXAO5c@gateway01.ap-southeast-1.prod.aws.tidbcloud.com:4000/test?sslaccept=strict

@@ -1,0 +1,13 @@
+model Resignation {
+  id              Int      @id @default(autoincrement())
+  employeeId      Int
+  employee        Employee @relation(fields: [employeeId], references: [id])
+  resignationDate DateTime @default(now())
+  lastWorkingDate DateTime?
+  noticePeriod    Int      @default(30)
+  reason          String   @db.Text
+  status          String   @default("Pending") // Pending, Approved, Rejected
+  remarks         String?  @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

@@ -1,6 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/client"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
@@ -10,9 +9,9 @@ datasource db {
 }
 
 model Employee {
-  id          Int      @id @default(autoincrement())
-  employeeId  String   @unique
-  
+  id         Int    @id @default(autoincrement())
+  employeeId String @unique
+
   // Basic Info
   firstName   String?
   middleName  String?
@@ -23,45 +22,54 @@ model Employee {
   gender      String?
   cvUrl       String?
   idProofUrl  String?
-  welcomeSent Boolean  @default(false)
-  
-  // Job Info
-  designation String?
-  branch      String?
-  department  String?
-  subDepartment String?
-  grade       String?
-  employeeType String?
-  zone        String?
-  level       String?
-  shift       String?
-  email       String?
-  doj         DateTime?
-  probationDays Int?
-  trainingCompletionDate DateTime?
-  permanentDate DateTime?
-  sisterCompany String?
-  location    String?
-  
-  // Manager Relation
-  managerId   Int?
-  manager     Manager? @relation(fields: [managerId], references: [id])
+  welcomeSent Boolean   @default(false)
 
-  insuranceNo String?
+  // Job Info
+  designation               String?
+  designationId             Int?
+  designationRef            Designation? @relation(fields: [designationId], references: [id])
+  branch                    String?
+  branchId                  Int?
+  branchRef                 Branch?      @relation(fields: [branchId], references: [id])
+  department                String?
+  departmentId              Int?
+  departmentRef             Department?  @relation(fields: [departmentId], references: [id])
+  subDepartment             String?
+  grade                     String?
+  employeeType              String?
+  zone                      String?
+  levelId                   Int?
+  level                     Level?       @relation(fields: [levelId], references: [id])
+  shift                  String?
+  email                  String?
+  doj                    DateTime?
+  probationDays          Int?
+  trainingCompletionDate DateTime?
+  permanentDate          DateTime?
+  sisterCompany          String?
+  location               String?
+
+  // Manager Relation
+  managerId Int?
+  manager   Manager? @relation(fields: [managerId], references: [id])
+  managerEffectiveDate DateTime?
+  managerRemarks       String?   @db.Text
+
+  insuranceNo      String?
   insuranceCompany String?
-  insuranceExpiry DateTime?
-  retirementAge Int?
-  jobDescription String? @db.Text
+  insuranceExpiry  DateTime?
+  retirementAge    Int?
+  jobDescription   String?   @db.Text
 
   // Contact Info
-  whatsapp      String?
-  altPhone      String?
-  emergencyNumber String?
-  companyMobile String?
-  currentAddress String? @db.Text
+  whatsapp         String?
+  altPhone         String?
+  emergencyNumber  String?
+  companyMobile    String?
+  currentAddress   String? @db.Text
   permanentAddress String? @db.Text
-  personalEmail String?
-  socialLinks   String? @db.Text
+  personalEmail    String?
+  socialLinks      String? @db.Text
 
   // Other Info
   skills        String? @db.Text
@@ -71,91 +79,109 @@ model Employee {
   maritalStatus String?
   familyMembers Int?
   nationality   String?
-  
+
   // Bank Details
-  bankHolder    String?
-  bankName      String?
-  bankBranch    String?
-  accountType   String?
-  accountNo     String?
-  ifscCode      String?
-  crnNo         String?
-  esicNo        String?
-  panNo         String?
-  pfNo          String?
-  uanNo         String?
-  micrNo        String?
+  bankHolder  String?
+  bankName    String?
+  bankBranch  String?
+  accountType String?
+  accountNo   String?
+  ifscCode    String?
+  crnNo       String?
+  esicNo      String?
+  panNo       String?
+  pfNo        String?
+  uanNo       String?
+  micrNo      String?
 
-  status      String   @default("Active")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  // Authentication & RBAC (Feature 16)
+  password    String?
+  role        String   @default("Employee") // 'Employee', 'HR', 'Admin'
 
-  offboardings Offboarding[]
+  status    String   @default("Active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  offboardings          Offboarding[]
+  levelHistory          LevelHistory[]
+  profileChangeRequests ProfileChangeRequest[]
+  structureHistory      EmployeeStructureHistory[]
+  resignations          Resignation[]
+  promotions            Promotion[]
+  attendanceLogs        AttendanceLog[]
+  payslips              Payslip[]
+  leaveBalances         LeaveBalance[]
+  leaveRequests         LeaveRequest[]
 }
 
 model ExEmployee {
-  id                Int      @id @default(autoincrement())
-  employeeId        String
-  
+  id         Int    @id @default(autoincrement())
+  employeeId String
+
   // Matching fields to save data
-  firstName         String?
-  middleName        String?
-  lastName          String?
-  email             String?
-  mobile            String?
-  designation       String?
-  department        String?
-  branch            String?
-  
+  firstName   String?
+  middleName  String?
+  lastName    String?
+  email       String?
+  mobile      String?
+  designation String?
+  department  String?
+  branch      String?
+
   exitDate          DateTime?
   reason            String?
   eligibleForRehire Boolean?
 
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Manager {
-  id         Int      @id @default(autoincrement())
+  id         Int        @id @default(autoincrement())
   name       String?
   email      String?
   mobile     String?
   department String?
   branch     String?
-  level      String?  // Manager, Senior Manager, Team Lead
-  active     Boolean? @default(true)
+  level      String? // Manager, Senior Manager, Team Lead
+  
+  // Authentication & RBAC (Feature 16)
+  password   String?
+  role       String   @default("Manager") // 'Manager'
+
+  active     Boolean?   @default(true)
   employees  Employee[]
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Offboarding {
-  id             Int       @id @default(autoincrement())
-  employeeId     Int
-  employee       Employee  @relation(fields: [employeeId], references: [id])
+  id              Int       @id @default(autoincrement())
+  employeeId      Int
+  employee        Employee  @relation(fields: [employeeId], references: [id])
   lastWorkingDate DateTime?
-  reason         String?
-  status         String    @default("Pending") // Pending / Completed
-  
-  checklists     ExitChecklist[]
+  reason          String?
+  status          String    @default("Pending") // Pending / Completed
 
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  checklists ExitChecklist[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ExitChecklist {
-  id             Int          @id @default(autoincrement())
+  id             Int         @id @default(autoincrement())
   offboardingId  Int
-  offboarding    Offboarding  @relation(fields: [offboardingId], references: [id])
-  department     String       // HR, IT, Admin, Finance
+  offboarding    Offboarding @relation(fields: [offboardingId], references: [id])
+  department     String // HR, IT, Admin, Finance
   taskName       String
-  assignedTo     String?      // Email or ID of responsible person
-  status         String       @default("Pending") // Pending / Completed
+  assignedTo     String? // Email or ID of responsible person
+  status         String      @default("Pending") // Pending / Completed
   completionDate DateTime?
 
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Finance {
@@ -179,4 +205,314 @@ model Onboarding {
   status             String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+}
+
+model Level {
+  id             Int     @id @default(autoincrement())
+  levelName      String  @unique
+  levelCode      String?
+  description    String? @db.Text
+  parentLevelId  Int?
+  parentLevel    Level?  @relation("LevelHierarchy", fields: [parentLevelId], references: [id])
+  subLevels      Level[] @relation("LevelHierarchy")
+  hierarchyOrder Int?
+  status         String  @default("Active")
+
+  employees    Employee[]
+  levelHistory LevelHistory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LevelHistory {
+  id            Int       @id @default(autoincrement())
+  employeeId    Int
+  employee      Employee  @relation(fields: [employeeId], references: [id])
+  levelId       Int
+  level         Level     @relation(fields: [levelId], references: [id])
+  effectiveFrom DateTime
+  effectiveTo   DateTime?
+  remarks       String?   @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProfileChangeRequest {
+  id         Int      @id @default(autoincrement())
+  employeeId Int
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  changeType String // 'Personal Info', 'Contact Info', 'Bank Details', etc.
+  oldData    Json?
+  newData    Json
+  riskLevel  String // 'Low', 'Medium', 'High'
+  status     String   @default("Pending") // 'Pending', 'Approved', 'Rejected'
+
+  reviewedBy      Int? // User ID of HR/Admin who reviewed it
+  rejectionReason String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// -------------------------------------------------------------
+// Structure Management
+// -------------------------------------------------------------
+
+model Branch {
+  id         Int      @id @default(autoincrement())
+  branchName String   @unique
+  branchCode String?
+  address    String?  @db.Text
+  city       String?
+  state      String?
+  status     String   @default("Active") // 'Active', 'Inactive'
+  
+  employees Employee[]
+  devices   Device[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Department {
+  id             Int      @id @default(autoincrement())
+  departmentName String   @unique
+  departmentCode String?
+  description    String?  @db.Text
+  status         String   @default("Active")
+
+  employees Employee[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Designation {
+  id              Int      @id @default(autoincrement())
+  designationName String   @unique
+  designationCode String?
+  description     String?  @db.Text
+  status          String   @default("Active")
+
+  employees Employee[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Device {
+  id                    Int      @id @default(autoincrement())
+  deviceName            String
+  deviceId              String   @unique
+  branchId              Int
+  branch                Branch   @relation(fields: [branchId], references: [id])
+  locationName          String?
+  ipAddress             String?
+  status                String   @default("Active")
+  departmentRestriction Int? // Restrict swipe to a specific departmentID (Optional)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EmployeeStructureHistory {
+  id            Int      @id @default(autoincrement())
+  employeeId    Int
+  employee      Employee @relation(fields: [employeeId], references: [id])
+  
+  transferType  String   // 'Branch', 'Department', 'Designation'
+  oldValueId    Int?     // Before ID
+  newValueId    Int      // After ID
+  effectiveDate DateTime
+  remarks       String?  @db.Text
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Resignation {
+  id              Int       @id @default(autoincrement())
+  employeeId      Int
+  employee        Employee  @relation(fields: [employeeId], references: [id])
+  resignationDate DateTime  @default(now())
+  lastWorkingDay  DateTime?
+  reason          String?   @db.Text
+  status          String    @default("Pending") // 'Pending', 'Approved', 'Rejected'
+  remarks         String?   @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Promotion {
+  id              Int       @id @default(autoincrement())
+  employeeId      Int
+  employee        Employee  @relation(fields: [employeeId], references: [id])
+  oldDesignation  String?
+  newDesignation  String
+  promotionDate   DateTime
+  salaryIncrement Float?    
+  remarks         String?   @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// -------------------------------------------------------------
+// Leave Management System (Feature 15)
+// -------------------------------------------------------------
+
+model LeaveType {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique // e.g. Sick Leave, Casual Leave, Paid Leave
+  description String?  @db.Text
+  defaultDays Int      @default(0) // Default days allocated per year
+  status      String   @default("Active")
+  
+  leaveBalances LeaveBalance[]
+  leaveRequests LeaveRequest[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LeaveBalance {
+  id          Int       @id @default(autoincrement())
+  employeeId  Int
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  leaveTypeId Int
+  leaveType   LeaveType @relation(fields: [leaveTypeId], references: [id])
+  total       Float     @default(0)
+  used        Float     @default(0)
+  pending     Float     @default(0) // Locked balance during review
+  
+  year        Int       // 2024, 2025
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([employeeId, leaveTypeId, year])
+}
+
+model LeaveRequest {
+  id          Int       @id @default(autoincrement())
+  employeeId  Int
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  leaveTypeId Int
+  leaveType   LeaveType @relation(fields: [leaveTypeId], references: [id])
+  
+  startDate   DateTime
+  endDate     DateTime
+  days        Float     // Allows for half day (0.5)
+  reason      String?   @db.Text
+  status      String    @default("Pending") // Pending, Approved, Rejected, Cancelled
+
+  reviewedBy  Int?      // ID of manager/HR who reviewed
+  reviewDate  DateTime?
+  reviewDocs  String?   @db.Text // JSON or comma separated URLs for medical certificates
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// -------------------------------------------------------------
+// Attendance Tracking (Feature 17)
+// -------------------------------------------------------------
+
+model AttendanceLog {
+  id         Int      @id @default(autoincrement())
+  employeeId Int
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  
+  date       DateTime @db.Date // Specific day of attendance (e.g. 2024-03-03)
+  clockIn    DateTime?
+  clockOut   DateTime?
+  status     String   @default("Present") // 'Present', 'Absent', 'Half Day'
+  
+  totalHours Float?   // Calculated total hours worked that day
+  ipAddress  String?  // Validation of punch location
+  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([employeeId, date])
+}
+
+// -------------------------------------------------------------
+// Payroll & Payslips (Feature 18)
+// -------------------------------------------------------------
+
+model PayrollRun {
+  id              Int       @id @default(autoincrement())
+  month           String    // e.g. "January"
+  year            Int       // e.g. 2024
+  status          String    @default("Draft") // 'Draft', 'Processed', 'Paid'
+  totalEmployees  Int       @default(0)
+  totalCost       Float     @default(0)
+  processedBy     Int?      // Manager ID
+  processedAt     DateTime?
+  
+  payslips        Payslip[]
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([month, year])
+}
+
+// -------------------------------------------------------------
+// Bulk Update Audit Logs
+// -------------------------------------------------------------
+
+model BulkUpdateBatch {
+  id         Int              @id @default(autoincrement())
+  updateType String
+  status     String           @default("Completed")
+  logs       BulkUpdateLog[]
+  createdAt  DateTime         @default(now())
+}
+
+model BulkUpdateLog {
+  id              Int              @id @default(autoincrement())
+  batchId         Int
+  batch           BulkUpdateBatch  @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  employeeId      String
+  status          String           // Success, Failed
+  changesDetected String?          @db.Text // JSON string of old vs new
+  errorMessage    String?          @db.Text
+  createdAt       DateTime         @default(now())
+}
+
+model Payslip {
+  id              Int        @id @default(autoincrement())
+  payrollRunId    Int
+  payrollRun      PayrollRun @relation(fields: [payrollRunId], references: [id], onDelete: Cascade)
+  employeeId      Int
+  employee        Employee   @relation(fields: [employeeId], references: [id])
+  
+  // Salary Breakdown
+  basic           Float
+  hra             Float
+  allowances      Float
+  
+  // Deductions
+  pfDeduction     Float      @default(0)
+  esiDeduction    Float      @default(0)
+  taxDeduction    Float      @default(0)
+  otherDeductions Float      @default(0)
+
+  // Calculations
+  grossSalary     Float
+  totalDeductions Float
+  netSalary       Float
+  
+  status          String     @default("Generated") // 'Generated', 'Sent'
+  paymentDate     DateTime?
+
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@unique([employeeId, payrollRunId])
 }
