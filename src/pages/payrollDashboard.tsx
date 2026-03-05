@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./payrollDashboard.css";
-import { Plus, Download, FileText, CheckCircle2, IndianRupee } from "lucide-react";
+import { Plus, FileText, CheckCircle2, IndianRupee } from "lucide-react";
 
 function PayrollDashboard() {
     const [runs, setRuns] = useState<any[]>([]);
@@ -74,7 +74,7 @@ function PayrollDashboard() {
             import('jspdf-autotable').then(() => {
                 const jsPDF = jsPDFModule.default;
 
-                slips.forEach((slip, index) => {
+                slips.forEach((slip) => {
                     const doc = new jsPDF();
 
                     // Header

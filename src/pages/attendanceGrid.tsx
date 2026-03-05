@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./attendanceGrid.css";
-import { ChevronLeft, ChevronRight, Download, Calendar as CalendarIcon, Clock } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download, Calendar as CalendarIcon } from "lucide-react";
 
 function AttendanceGrid() {
     const [logs, setLogs] = useState<any[]>([]);

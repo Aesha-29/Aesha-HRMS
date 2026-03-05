@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { Search, Map, Layers, CheckCircle, RefreshCcw, Info, Download, Target, Users } from "lucide-react";
+import { Search, Map, Layers, CheckCircle, RefreshCcw, Info, Target, Users } from "lucide-react";
 import "./assignLevel.css";
 
 interface Employee {

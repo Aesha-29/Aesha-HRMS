@@ -138,14 +138,6 @@ function App() {
     }
   };
 
-  const handleLogin = (token: string, user: any) => {
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(user));
-    setIsAuthenticated(true);
-    setCurrentUser(user);
-    setActivePage("dashboard");
-  };
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");

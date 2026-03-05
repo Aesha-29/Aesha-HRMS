@@ -16,7 +16,7 @@ import {
     UserCheck, Clock, UserX, CalendarOff, FileQuestion, MapPinOff, LogOut,
     Receipt, Shuffle, Landmark, Smartphone, Home, History, ScanFace, UserCog,
     PlusCircle, Hourglass, FileText, Users, Briefcase, IndianRupee, ArrowUpRight,
-    ArrowDownRight, CheckCircle2, UserPlus, Plus, FileBarChart
+    ArrowDownRight, Plus, FileBarChart
 } from 'lucide-react';
 
 const hiringData = [
